@@ -15,6 +15,10 @@
 					]
 				]
 			]);
+
+			$this->belongsTo('Categories', [
+				'foreignKey' => 'category_id'
+			]);
 		}
 
 		public function validationDefault(Validator $validator) {
