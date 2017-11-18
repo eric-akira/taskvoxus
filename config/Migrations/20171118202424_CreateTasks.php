@@ -57,7 +57,7 @@ class CreateTasks extends AbstractMigration
 
         $table->addColumn('done_by', 'integer', $defaultIdOptions);
 
-        $table->addColumn('task_file_id', 'integer', $defaultIdOptions);
+        $table->addColumn('task_file', 'integer', $defaultIdOptions);
 
         $table->create();
     }

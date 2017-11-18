@@ -1,91 +1,128 @@
 <?php
-	namespace App\Controller;
+namespace App\Controller;
 
-	use App\Controller\AppController;
+use App\Controller\AppController;
 
-	class TasksController extends AppController {
-		
-		public function initialize() {
-			parent::initialize();
+/**
+ * Tasks Controller
+ *
+ * @property \App\Model\Table\TasksTable $Tasks
+ *
+ * @method \App\Model\Entity\Task[] paginate($object = null, array $settings = [])
+ */
+class TasksController extends AppController
+{
 
-			$this->loadComponent('Flash');
-		}
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function index()
+    {
+        $this->paginate = [
+            'contain' => ['Categories']
+        ];
+        $tasks = $this->paginate($this->Tasks);
 
-		public function index() {
-			$tasks = $this->Tasks->find('all');
+        $this->set(compact('tasks'));
+        $this->set('_serialize', ['tasks']);
+    }
 
-			foreach ($tasks as $task) {
-				$task['created'] = $this->formatDatesToDisplay($task['created']);
-				$task['modified'] = $this->formatDatesToDisplay($task['modified']);
-			}
+    /**
+     * View method
+     *
+     * @param string|null $id Task id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $task = $this->Tasks->get($id, [
+            'contain' => ['Categories']
+        ]);
 
-			$this->set(compact('tasks'));
-		}
+        $this->set('task', $task);
+        $this->set('_serialize', ['task']);
+    }
 
-		public function view($id = null) {
-			$task = $this->Tasks->get($id);
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+        $task = $this->Tasks->newEntity();
+        if ($this->request->is('post')) {
+            $task = $this->Tasks->patchEntity($task, $this->request->getData());
+            if ($this->Tasks->save($task)) {
+                $this->Flash->success(__('The task has been saved.'));
 
-			$task['created'] = $this->formatDatesToDisplay($task['created']);
-			$task['modified'] = $this->formatDatesToDisplay($task['modified']);
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The task could not be saved. Please, try again.'));
+        }
+        $categories = $this->Tasks->Categories->find('list', ['limit' => 200]);
+        $this->set(compact('task', 'categories'));
+        $this->set('_serialize', ['task']);
+    }
 
-			$this->set(compact('task'));
-		}
+    /**
+     * Edit method
+     *
+     * @param string|null $id Task id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $task = $this->Tasks->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $task = $this->Tasks->patchEntity($task, $this->request->getData());
+            if ($this->Tasks->save($task)) {
+                $this->Flash->success(__('The task has been saved.'));
 
-		public function add() {
-			$task = $this->Tasks->newEntity();
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The task could not be saved. Please, try again.'));
+        }
+        $categories = $this->Tasks->Categories->find('list', ['limit' => 200]);
+        $this->set(compact('task', 'categories'));
+        $this->set('_serialize', ['task']);
+    }
 
-			if ($this->request->is('post')) {
-				$task = $this->Tasks->patchEntity($task, $this->request->getData());
+    /**
+     * Delete method
+     *
+     * @param string|null $id Task id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $task = $this->Tasks->get($id);
+        if ($this->Tasks->delete($task)) {
+            $this->Flash->success(__('The task has been deleted.'));
+        } else {
+            $this->Flash->error(__('The task could not be deleted. Please, try again.'));
+        }
 
-				if ($this->Tasks->save($task)) {
-					$this->Flash->success(__('Tarefa criada!'));
-					return $this->redirect(['action' => 'index']);
-				}
+        return $this->redirect(['action' => 'index']);
+    }
 
-				$this->Flash->error(__('Erro na criação da tarefa. =('));
-			}
+    //funcao para formatar horarios das tasks antes de exibicao
+    private function formatDatesToDisplay($dateToDisplay) {
+        
+        if ($dateToDisplay == null) {
+            $dateToDisplay = '--';
+        } else {
+            $dateToDisplay = $dateToDisplay->format('H:i:s d-m-Y');
+        }
 
-			$this->set('task', $task);
-		}
-
-		public function edit($id = null) {
-			$task = $this->Tasks->get($id);
-
-			if($this->request->is(['post', 'put'])) {
-				$this->Tasks->patchEntity($task, $this->request->getData());
-
-				if ($this->Tasks->save($task)) {
-					$this->Flash->success(__('Tarefa atualizada!'));
-					return $this->redirect(['action' => 'index']);
-				}
-
-				$this->Flash->error(__('Houve um erro na criação da tarefa. =('));
-			}
-
-			$this->set('task', $task);
-		}
-
-		public function delete($id) {
-			$this->request->allowMethod(['post', 'delete']);
-
-			$task = $this->Tasks->get($id);
-			if ($this->Tasks->delete($task)) {
-				$this->Flash->success(__('A tarefa {0} foi deletada', h($task['title'])));
-				return $this->redirect(['action' => 'index']);
-			}
-		}
-
-		//funcao para formatar horarios das tasks antes de exibicao
-		private function formatDatesToDisplay($dateToDisplay) {
-			
-			if ($dateToDisplay == null) {
-				$dateToDisplay = '--';
-			} else {
-				$dateToDisplay = $dateToDisplay->format('H:i:s d-m-Y');
-			}
-
-			return $dateToDisplay;
-		}
-		
-	}
-?>
+        return $dateToDisplay;
+    }
+}

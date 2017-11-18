@@ -1,15 +1,40 @@
-<h1>Criar Nova Tarefa</h1>
 <?php
-	echo $this->Form->create($task);
-	echo $this->Form->input('title');
-	echo $this->Form->input('description', ['rows' => '5']);
-	echo $this->Form->radio('priority', [
-		['value' => '1', 'text' => '1'],
-		['value' => '2', 'text' => '2'],
-		['value' => '3', 'text' => '3'],
-		['value' => '4', 'text' => '4'],
-		['value' => '5', 'text' => '5']
-	]);
-	echo $this->Form->button(__('Criar Tarefa'));
-	echo $this->Form->end();
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Task $task
+ */
 ?>
+<nav class="large-3 medium-4 columns" id="actions-sidebar">
+    <ul class="side-nav">
+        <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('List Tasks'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Categories'), ['controller' => 'Categories', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Category'), ['controller' => 'Categories', 'action' => 'add']) ?></li>
+    </ul>
+</nav>
+<div class="tasks form large-9 medium-8 columns content">
+    <?= $this->Form->create($task) ?>
+    <fieldset>
+        <legend><?= __('Add Task') ?></legend>
+        <?php
+            echo $this->Form->control('title');
+            echo $this->Form->control('description');
+            //echo $this->Form->control('priority');
+            echo $this->Form->label('priority');
+            echo $this->Form->radio('priority', [
+                ['value' => '1', 'text' => '1'],
+                ['value' => '2', 'text' => '2'],
+                ['value' => '3', 'text' => '3'],
+                ['value' => '4', 'text' => '4'],
+                ['value' => '5', 'text' => '5']
+            ]);
+            //echo $this->Form->control('status');
+            echo $this->Form->control('category_id', ['options' => $categories]);
+            //echo $this->Form->control('created_by');
+            //echo $this->Form->control('done_by');
+            //echo $this->Form->control('task_file');
+        ?>
+    </fieldset>
+    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->end() ?>
+</div>
