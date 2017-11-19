@@ -1,91 +1,175 @@
 <?php
-	namespace App\Controller;
+namespace App\Controller;
 
-	use App\Controller\AppController;
+use App\Controller\AppController;
 
-	class TasksController extends AppController {
-		
-		public function initialize() {
-			parent::initialize();
+/**
+ * Tasks Controller
+ *
+ * @property \App\Model\Table\TasksTable $Tasks
+ *
+ * @method \App\Model\Entity\Task[] paginate($object = null, array $settings = [])
+ */
+class TasksController extends AppController
+{
 
-			$this->loadComponent('Flash');
-		}
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function index()
+    {
+        $this->paginate = [
+            'contain' => ['Categories']
+        ];
+        $tasks = $this->paginate($this->Tasks);
 
-		public function index() {
-			$tasks = $this->Tasks->find('all');
+        foreach ($tasks as $task) {
+            $task['created_by_id'] = $task['created_by'];
+            $task['created_by'] = $this->getRelatedUser($task['created_by']);
 
-			foreach ($tasks as $task) {
-				$task['created'] = $this->formatDatesToDisplay($task['created']);
-				$task['modified'] = $this->formatDatesToDisplay($task['modified']);
-			}
+            if ($task['done_by'] != 0) {
+                $task['done_by_id'] = $task['done_by'];
+                $task['done_by'] = $this->getRelatedUser($task['done_by']);
+            }
+        }
+        
+        $this->set(compact('tasks'));
+        $this->set('_serialize', ['tasks']);
+    }
 
-			$this->set(compact('tasks'));
-		}
+    /**
+     * View method
+     *
+     * @param string|null $id Task id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $task = $this->Tasks->get($id, [
+            'contain' => ['Categories']
+        ]);
 
-		public function view($id = null) {
-			$task = $this->Tasks->get($id);
+        $task['created_by_id'] = $task['created_by'];
+        $task['created_by'] = $this->getRelatedUser($task['created_by']);
 
-			$task['created'] = $this->formatDatesToDisplay($task['created']);
-			$task['modified'] = $this->formatDatesToDisplay($task['modified']);
+        if ($task['done_by'] != 0) {
+            $task['done_by_id'] = $task['done_by'];
+            $task['done_by'] = $this->getRelatedUser($task['done_by']);
+        }
 
-			$this->set(compact('task'));
-		}
+        $this->set('task', $task);
+        $this->set('_serialize', ['task']);
+    }
 
-		public function add() {
-			$task = $this->Tasks->newEntity();
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+        $task = $this->Tasks->newEntity();
+        if ($this->request->is('post')) {
+            $task = $this->Tasks->patchEntity($task, $this->request->getData());
+            $task->created_by = $this->Auth->user('id');
+            
+            if ($this->Tasks->save($task)) {
+                $this->Flash->success(__('The task has been saved.'));
 
-			if ($this->request->is('post')) {
-				$task = $this->Tasks->patchEntity($task, $this->request->getData());
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The task could not be saved. Please, try again.'));
+        }
+        $categories = $this->Tasks->Categories->find('list', ['limit' => 200]);
+        $this->set(compact('task', 'categories'));
+        $this->set('_serialize', ['task']);
+    }
 
-				if ($this->Tasks->save($task)) {
-					$this->Flash->success(__('Tarefa criada!'));
-					return $this->redirect(['action' => 'index']);
-				}
+    /**
+     * Edit method
+     *
+     * @param string|null $id Task id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $task = $this->Tasks->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $task = $this->Tasks->patchEntity($task, $this->request->getData());
+            if ($this->Tasks->save($task)) {
+                $this->Flash->success(__('The task has been saved.'));
 
-				$this->Flash->error(__('Erro na criação da tarefa. =('));
-			}
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The task could not be saved. Please, try again.'));
+        }
+        $categories = $this->Tasks->Categories->find('list', ['limit' => 200]);
+        $this->set(compact('task', 'categories'));
+        $this->set('_serialize', ['task']);
+    }
 
-			$this->set('task', $task);
-		}
+    /**
+     * Delete method
+     *
+     * @param string|null $id Task id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $task = $this->Tasks->get($id);
+        if ($this->Tasks->delete($task)) {
+            $this->Flash->success(__('The task has been deleted.'));
+        } else {
+            $this->Flash->error(__('The task could not be deleted. Please, try again.'));
+        }
 
-		public function edit($id = null) {
-			$task = $this->Tasks->get($id);
+        return $this->redirect(['action' => 'index']);
+    }
 
-			if($this->request->is(['post', 'put'])) {
-				$this->Tasks->patchEntity($task, $this->request->getData());
+    public function markDone($id = null) {
+        $task = $this->Tasks->get($id);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = ['status' => 'done', 'done_by' => $this->Auth->user('id')];
 
-				if ($this->Tasks->save($task)) {
-					$this->Flash->success(__('Tarefa atualizada!'));
-					return $this->redirect(['action' => 'index']);
-				}
+            $task = $this->Tasks->patchEntity($task, $data);
 
-				$this->Flash->error(__('Houve um erro na criação da tarefa. =('));
-			}
+            if ($this->Tasks->save($task)) {
+                $this->Flash->success(__('The task has been marked done! Congrats!'));
 
-			$this->set('task', $task);
-		}
+                return $this->redirect(['action' => 'view', $id]);
+            }
+            $this->Flash->error(__('The task could not be marked done. Please, try again.'));
+        }
+        return $this->redirect(['action' => 'view', $id]);
+    }
 
-		public function delete($id) {
-			$this->request->allowMethod(['post', 'delete']);
+    //funcao para formatar horarios das tasks antes de exibicao
+    private function formatDatesToDisplay($dateToDisplay) {
+        
+        if ($dateToDisplay == null) {
+            $dateToDisplay = '--';
+        } else {
+            $dateToDisplay = $dateToDisplay->format('H:i:s d-m-Y');
+        }
 
-			$task = $this->Tasks->get($id);
-			if ($this->Tasks->delete($task)) {
-				$this->Flash->success(__('A tarefa {0} foi deletada', h($task['title'])));
-				return $this->redirect(['action' => 'index']);
-			}
-		}
+        return $dateToDisplay;
+    }
 
-		//funcao para formatar horarios das tasks antes de exibicao
-		private function formatDatesToDisplay($dateToDisplay) {
-			
-			if ($dateToDisplay == null) {
-				$dateToDisplay = '--';
-			} else {
-				$dateToDisplay = $dateToDisplay->format('H:i:s d-m-Y');
-			}
+    private function getRelatedUser($user_id) {
+        $this->loadModel('Users');
 
-			return $dateToDisplay;
-		}
-		
-	}
-?>
+        $user = $this->Users->find()->where(['id' => $user_id])->first();
+        
+        return $user['username'];
+    }
+
+
+}

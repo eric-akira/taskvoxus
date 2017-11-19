@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Task[]|\Cake\Collection\CollectionInterface $tasks
+ * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -19,46 +19,33 @@
         <li><?= $this->Html->link(__('New Category'), ['controller' => 'Categories', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="tasks index large-9 medium-8 columns content">
-    <h3><?= __('Tasks') ?></h3>
+<div class="users index large-9 medium-8 columns content">
+    <h3><?= __('Users') ?> </h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('title') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('priority') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('status') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('username') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('password') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('email') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('category_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_by') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('done_by') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('task_file') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($tasks as $task): ?>
+            <?php foreach ($users as $user): ?>
             <tr>
-                <td><?= $this->Number->format($task->id) ?></td>
-                <td><?= h($task->title) ?></td>
-                <td><?= $this->Number->format($task->priority) ?></td>
-                <td><?= h($task->status) ?></td>
-                <td><?= h($task->created) ?></td>
-                <td><?= h($task->modified) ?></td>
-                <td><?= $task->has('category') ? $this->Html->link($task->category->name, ['controller' => 'Categories', 'action' => 'view', $task->category->id]) : '' ?></td>
-                <td><?= $this->Html->link($task->created_by, ['controller' => 'Users', 'action' => 'view', $task->created_by_id]) ?></td>
-
-               
-                <?php if ($task->done_by !== 0): ?>
-                    <td><?= $this->Html->link($task->done_by, ['controller' => 'Users', 'action' => 'view', $task->done_by_id]) ?></td>
-                <?php else: ?>
-                    <td>Not done yet.</td>
-                <?php endif; ?>
-
-                <td><?= $this->Number->format($task->task_file) ?></td>
+                <td><?= $this->Number->format($user->id) ?></td>
+                <td><?= h($user->username) ?></td>
+                <td><?= h($user->password) ?></td>
+                <td><?= h($user->email) ?></td>
+                <td><?= h($user->created) ?></td>
+                <td><?= h($user->modified) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

@@ -207,6 +207,8 @@ Type::build('timestamp')
  * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
+Plugin::load('Migrations');
+Plugin::load('ADmad/SocialAuth', ['bootstrap' => true, 'routes' => true]);
 
 /*
  * Only try to load DebugKit in development mode

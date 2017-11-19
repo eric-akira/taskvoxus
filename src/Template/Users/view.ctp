@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Task $task
+ * @var \App\Model\Entity\User $user
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -19,29 +19,35 @@
         <li><?= $this->Html->link(__('New Category'), ['controller' => 'Categories', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="tasks form large-9 medium-8 columns content">
-    <?= $this->Form->create($task) ?>
-    <fieldset>
-        <legend><?= __('Add Task') ?></legend>
-        <?php
-            echo $this->Form->control('title');
-            echo $this->Form->control('description');
-            //echo $this->Form->control('priority');
-            echo $this->Form->label('priority');
-            echo $this->Form->radio('priority', [
-                ['value' => '1', 'text' => '1'],
-                ['value' => '2', 'text' => '2'],
-                ['value' => '3', 'text' => '3'],
-                ['value' => '4', 'text' => '4'],
-                ['value' => '5', 'text' => '5']
-            ]);
-            //echo $this->Form->control('status');
-            echo $this->Form->control('category_id', ['options' => $categories]);
-            //echo $this->Form->control('created_by');
-            //echo $this->Form->control('done_by');
-            //echo $this->Form->control('task_file');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<div class="users view large-9 medium-8 columns content">
+    <h3><?= h($user->id) ?> - <?= h($user->username) ?></h3>
+    <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('Username') ?></th>
+            <td><?= h($user->username) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Password') ?></th>
+            <td><?= h($user->password) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Email') ?></th>
+            <td><?= h($user->email) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($user->id) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Created') ?></th>
+            <td><?= h($user->created) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Modified') ?></th>
+            <td><?= h($user->modified) ?></td>
+        </tr>
+    </table>
+    <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?>
+    <br>
+    <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
 </div>

@@ -47,6 +47,44 @@ class Application extends BaseApplication
             // Add routing middleware.
             ->add(new RoutingMiddleware($this));
 
+        $middlewareQueue->add(new \ADmad\SocialAuth\Middleware\SocialAuthMiddleware([
+            // Request method type use to initiate authentication.
+            'requestMethod' => 'POST',
+            // Login page URL. In case of auth failure user is redirected to login
+            // page with "error" query string var.
+            'loginUrl' => '/users/login',
+            // URL string or array to redirect to after authentication.
+            'loginRedirect' => '/tasks/',
+            // Boolean indicating whether user identity should be returned as entity.
+            'userEntity' => false,
+            // User model.
+            'userModel' => 'Users',
+            // Finder type.
+            'finder' => 'all',
+            // Fields.
+            'fields' => [
+                'password' => 'password',
+            ],
+            // Session key to which to write identity record to.
+            'sessionKey' => 'Auth.User',
+            // The methods in user model which should be called in case of new user.
+            // It should return a User entity.
+            'getUserCallback' => 'getUser',
+            // SocialConnect Auth service's providers config. https://github.com/SocialConnect/auth/blob/master/README.md
+            'serviceConfig' => [
+                'provider' => [
+                    'google' => [
+                        'applicationId' => '325816854073-js320365q2trtlmvjlklgcd12mmi2b29.apps.googleusercontent.com',
+                        'applicationSecret' => '_CGBq_LUg3f7SJ9XOp7Pp6Wx',
+                        'scope' => [
+                            'https://www.googleapis.com/auth/userinfo.email',
+                            'https://www.googleapis.com/auth/userinfo.profile',
+                        ]
+                    ]     
+                ]
+            ]
+        ]));
+
         return $middlewareQueue;
     }
 }
