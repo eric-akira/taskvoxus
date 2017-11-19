@@ -44,11 +44,15 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Created By') ?></th>
-            <td><?= $this->Number->format($task->created_by) ?></td>
+            <td><?= $this->Html->link($task->created_by, ['controller' => 'Users', 'action' => 'view', $task->created_by_id]) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Done By') ?></th>
-            <td><?= $this->Number->format($task->done_by) ?></td>
+            <?php if ($task->done_by !== 0): ?>
+                <td><?= $this->Html->link($task->done_by, ['controller' => 'Users', 'action' => 'view', $task->done_by_id]) ?></td>
+            <?php else: ?>
+                <td>Not done yet.</td>
+            <?php endif; ?>
         </tr>
         <tr>
             <th scope="row"><?= __('Task File') ?></th>
@@ -68,6 +72,10 @@
         <?= $this->Text->autoParagraph(h($task->description)); ?>
     </div>
 
+    <?php if ($task->status !== 'done'): ?>
+        <?= $this->Form->postLink(__('Mark Task as Done'), ['action' => 'markDone', $task->id], ['confirm' => __('Did you really finished {0}?', $task->title)]) ?>
+        <br>
+    <?php endif; ?>
     <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id]) ?>
     <br>
     <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete {0}?', $task->title)]) ?>

@@ -25,6 +25,16 @@ class TasksController extends AppController
         ];
         $tasks = $this->paginate($this->Tasks);
 
+        foreach ($tasks as $task) {
+            $task['created_by_id'] = $task['created_by'];
+            $task['created_by'] = $this->getRelatedUser($task['created_by']);
+
+            if ($task['done_by'] != 0) {
+                $task['done_by_id'] = $task['done_by'];
+                $task['done_by'] = $this->getRelatedUser($task['done_by']);
+            }
+        }
+        
         $this->set(compact('tasks'));
         $this->set('_serialize', ['tasks']);
     }
@@ -41,6 +51,14 @@ class TasksController extends AppController
         $task = $this->Tasks->get($id, [
             'contain' => ['Categories']
         ]);
+
+        $task['created_by_id'] = $task['created_by'];
+        $task['created_by'] = $this->getRelatedUser($task['created_by']);
+
+        if ($task['done_by'] != 0) {
+            $task['done_by_id'] = $task['done_by'];
+            $task['done_by'] = $this->getRelatedUser($task['done_by']);
+        }
 
         $this->set('task', $task);
         $this->set('_serialize', ['task']);
@@ -116,6 +134,23 @@ class TasksController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    public function markDone($id = null) {
+        $task = $this->Tasks->get($id);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = ['status' => 'done', 'done_by' => $this->Auth->user('id')];
+
+            $task = $this->Tasks->patchEntity($task, $data);
+
+            if ($this->Tasks->save($task)) {
+                $this->Flash->success(__('The task has been marked done! Congrats!'));
+
+                return $this->redirect(['action' => 'view', $id]);
+            }
+            $this->Flash->error(__('The task could not be marked done. Please, try again.'));
+        }
+        return $this->redirect(['action' => 'view', $id]);
+    }
+
     //funcao para formatar horarios das tasks antes de exibicao
     private function formatDatesToDisplay($dateToDisplay) {
         
@@ -127,4 +162,14 @@ class TasksController extends AppController
 
         return $dateToDisplay;
     }
+
+    private function getRelatedUser($user_id) {
+        $this->loadModel('Users');
+
+        $user = $this->Users->find()->where(['id' => $user_id])->first();
+        
+        return $user['username'];
+    }
+
+
 }

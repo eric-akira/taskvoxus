@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "163c94a955a9c68b07a07d64efc0940d",
+    "content-hash": "9337d8ef9f33c1057f275954f770617d",
     "packages": [
+        {
+            "name": "admad/cakephp-social-auth",
+            "version": "0.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ADmad/cakephp-social-auth.git",
+                "reference": "c1dcb9b0df472682cfc802c49e17ca43c3ff0134"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ADmad/cakephp-social-auth/zipball/c1dcb9b0df472682cfc802c49e17ca43c3ff0134",
+                "reference": "c1dcb9b0df472682cfc802c49e17ca43c3ff0134",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^3.4",
+                "socialconnect/auth": "^1.5.1"
+            },
+            "type": "cakephp-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ADmad\\SocialAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A CakePHP plugin which allows you to authenticate using social providers like Facebook/Google/Twitter etc.",
+            "time": "2017-10-16T06:59:46+00:00"
+        },
         {
             "name": "aura/intl",
             "version": "3.0.0",
@@ -451,6 +487,54 @@
             "time": "2017-08-29T18:23:54+00:00"
         },
         {
+            "name": "paragonie/random_compat",
+            "version": "v2.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/5da4d3c796c275c55f057af5a643ae297d96b4d8",
+                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/random.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "pseudorandom",
+                "random"
+            ],
+            "time": "2017-09-27T21:40:39+00:00"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -612,6 +696,120 @@
                 "phinx"
             ],
             "time": "2017-06-05T13:30:19+00:00"
+        },
+        {
+            "name": "socialconnect/auth",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialConnect/auth.git",
+                "reference": "407facf32a015eda3379ba75014d9c23b5caad54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialConnect/auth/zipball/407facf32a015eda3379ba75014d9c23b5caad54",
+                "reference": "407facf32a015eda3379ba75014d9c23b5caad54",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "paragonie/random_compat": "^2.0",
+                "php": ">=5.5",
+                "socialconnect/common": "^1.0"
+            },
+            "replace": {
+                "socialconnect/oauth1": "self.version",
+                "socialconnect/oauth2": "self.version",
+                "socialconnect/openid": "self.version",
+                "socialconnect/openid-connect": "self.version",
+                "socialconnect/provider": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.34",
+                "squizlabs/php_codesniffer": "~3.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialConnect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Patsura",
+                    "email": "talk@dmtry.me"
+                }
+            ],
+            "description": "Social Connect Auth Component",
+            "keywords": [
+                "amazon",
+                "auth",
+                "bitbucket",
+                "facebook",
+                "github",
+                "gitlab",
+                "google",
+                "login",
+                "oauth",
+                "slack",
+                "socialconnect",
+                "twitch",
+                "twitter",
+                "vk"
+            ],
+            "time": "2017-08-27T15:37:55+00:00"
+        },
+        {
+            "name": "socialconnect/common",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialConnect/common.git",
+                "reference": "0383fea78d121409fc4ab8ff871ef57cb661a826"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialConnect/common/zipball/0383fea78d121409fc4ab8ff871ef57cb661a826",
+                "reference": "0383fea78d121409fc4ab8ff871ef57cb661a826",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "doctrine/cache": "^1.5.1",
+                "ext-curl": "*",
+                "guzzlehttp/guzzle": "^5.3|^6.0",
+                "phpunit/phpunit": "^4.2",
+                "squizlabs/php_codesniffer": "^2.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows to use Http\\Client\\Curl",
+                "guzzlehttp/guzzle": "Allows to use Http\\Client\\Guzzle, require guzzlehttp/guzzle:~5.3|~6.0."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialConnect\\Common\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Patsura",
+                    "email": "talk@dmtry.me"
+                }
+            ],
+            "description": "Common component",
+            "time": "2017-03-25T15:41:32+00:00"
         },
         {
             "name": "symfony/config",

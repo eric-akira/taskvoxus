@@ -90,4 +90,30 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+    public function getUser(\Cake\Datasource\EntityInterface $profile) {
+        if (empty($profile->email)) {
+            throw new \RuntimeException('Could not find email in social profile.');
+        }
+
+        //debug($profile);
+
+        $user = $this->find()
+            ->where(['email' => $profile->email])
+            ->first();
+
+        if ($user) {
+            return $user;
+        }
+
+        //not secure!
+        $user = $this->newEntity(['email' => $profile->email, 'username' => $profile->full_name, 'password' => 'bugbuginsecure']);
+        $user = $this->save($user);
+
+        if (!$user) {
+            throw new \RuntimeException('Unable to save new user');
+        }
+
+        return $user;
+    }
 }

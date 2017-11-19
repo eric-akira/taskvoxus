@@ -47,13 +47,18 @@
                 <td><?= h($task->created) ?></td>
                 <td><?= h($task->modified) ?></td>
                 <td><?= $task->has('category') ? $this->Html->link($task->category->name, ['controller' => 'Categories', 'action' => 'view', $task->category->id]) : '' ?></td>
-                <td><?= $this->Number->format($task->created_by) ?></td>
-                <td><?= $this->Number->format($task->done_by) ?></td>
+                <td><?= $this->Html->link($task->created_by, ['controller' => 'Users', 'action' => 'view', $task->created_by_id]) ?></td>
+
+               
+                <?php if ($task->done_by !== 0): ?>
+                    <td><?= $this->Html->link($task->done_by, ['controller' => 'Users', 'action' => 'view', $task->done_by_id]) ?></td>
+                <?php else: ?>
+                    <td>Not done yet.</td>
+                <?php endif; ?>
+
                 <td><?= $this->Number->format($task->task_file) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

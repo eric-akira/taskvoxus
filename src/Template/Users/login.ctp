@@ -19,4 +19,13 @@
         </fieldset>
     <?= $this->Form->button(__('Login')); ?>
     <?= $this->Form->end() ?>
+
+    <?= $this->Form->postLink( 'Login with Google', [
+            'plugin' => 'ADmad/SocialAuth',
+            'controller' => 'Auth',
+            'action' => 'login',
+            'provider' => 'google',
+            '?' => ['redirect' => $this->request->getQuery('redirect')]
+        ]); 
+    ?>
 </div>
