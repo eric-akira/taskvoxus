@@ -51,7 +51,7 @@
     <div>
         <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?>
         <br>
-        <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+        <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete {0}?', $user->username)]) ?>
     </div>
 
     <div class="related">

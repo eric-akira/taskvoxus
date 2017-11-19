@@ -33,7 +33,6 @@
                 <th scope="col"><?= $this->Paginator->sort('category_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created_by') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('done_by') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('task_file') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -55,8 +54,7 @@
                 <?php else: ?>
                     <td>Not done yet.</td>
                 <?php endif; ?>
-
-                <td><?= $this->Number->format($task->task_file) ?></td>
+                
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
                 </td>

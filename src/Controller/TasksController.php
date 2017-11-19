@@ -60,6 +60,9 @@ class TasksController extends AppController
             $task['done_by'] = $this->getRelatedUser($task['done_by']);
         }
 
+        $files = $this->getRelatedFiles($id);
+
+        $this->set('files', $files);
         $this->set('task', $task);
         $this->set('_serialize', ['task']);
     }
@@ -169,6 +172,14 @@ class TasksController extends AppController
         $user = $this->Users->find()->where(['id' => $user_id])->first();
         
         return $user['username'];
+    }
+
+    private function getRelatedFiles($task_id) {
+        $this->loadModel('Files');
+
+        $files = $this->Files->find()->where(['file_of' => $task_id]);
+
+        return $files;
     }
 
 

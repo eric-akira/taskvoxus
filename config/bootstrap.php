@@ -209,6 +209,7 @@ Type::build('timestamp')
  */
 Plugin::load('Migrations');
 Plugin::load('ADmad/SocialAuth', ['bootstrap' => true, 'routes' => true]);
+Plugin::load('Xety/Cake3Upload');
 
 /*
  * Only try to load DebugKit in development mode
