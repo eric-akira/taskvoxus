@@ -55,10 +55,6 @@
             <?php endif; ?>
         </tr>
         <tr>
-            <th scope="row"><?= __('Task File') ?></th>
-            <td><?= $this->Number->format($task->task_file) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Created') ?></th>
             <td><?= h($task->created) ?></td>
         </tr>
@@ -72,12 +68,25 @@
         <?= $this->Text->autoParagraph(h($task->description)); ?>
     </div>
 
-    <?php if ($task->status !== 'done'): ?>
-        <?= $this->Form->postLink(__('Mark Task as Done'), ['action' => 'markDone', $task->id], ['confirm' => __('Did you really finished {0}?', $task->title)]) ?>
-        <br>
-    <?php endif; ?>
-    <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id]) ?>
-    <br>
-    <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete {0}?', $task->title)]) ?>
+    <div class="row">
+        <h4><?= __('Related Files') ?></h4>
+        <?php if ($files !== null): ?>
+            <?php foreach ($files as $file): ?>
+                Check File: <?= $this->Html->link($file->file_name, $file->location); ?><br>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 
+    <?php if ($task->status !== 'done'): ?>
+        <div class="row">
+            <h4><?= __('Actions') ?></h4>
+            <?= $this->Html->link(__('Attach File to Task'), ['controller' => 'Files', 'action' => 'add', $task->id]) ?>
+            <br>
+            <?= $this->Form->postLink(__('Mark Task as Done'), ['action' => 'markDone', $task->id], ['confirm' => __('Did you really finished {0}?', $task->title)]) ?>
+            <br>
+            <?= $this->Html->link(__('Edit Task'), ['action' => 'edit', $task->id]) ?>
+            <br>
+            <?= $this->Form->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete {0}?', $task->title)]) ?>
+        </div>
+    <?php endif; ?>
 </div>

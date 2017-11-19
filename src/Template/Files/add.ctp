@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Category $category
+ * @var \App\Model\Entity\File $file
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -19,18 +19,17 @@
         <li><?= $this->Html->link(__('New Category'), ['controller' => 'Categories', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="categories form large-9 medium-8 columns content">
-    <?= $this->Form->create($category) ?>
+<div class="files form large-9 medium-8 columns content">
+    <?= $this->Form->create($file, ['type'=>'file']) ?>
     <fieldset>
-        <legend><?= __('Edit Category') ?></legend>
+        <legend><?= __('Add File to Task: {0}', $taskTitle) ?></legend>
         <?php
-            echo $this->Form->control('parent_id', ['options' => $parentCategories, 'empty' => 'No parent category']);
-            echo $this->Form->control('name');
-            echo $this->Form->control('description');
+            //echo $this->Form->control('location');
+            //echo $this->Form->control('file_of');
+            echo $this->Form->control('file_name');
+            echo $this->Form->input('location_file', ['type' => 'file']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
-
-    <?= $this->Form->postLink(__('Delete Category'), ['action' => 'delete', $category->id], ['confirm' => __('Are you sure you want to delete {0}?', $category->name)]) ?>
 </div>
