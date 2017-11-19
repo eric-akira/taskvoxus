@@ -47,7 +47,62 @@
             <td><?= h($user->modified) ?></td>
         </tr>
     </table>
-    <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?>
-    <br>
-    <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+
+    <div>
+        <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?>
+        <br>
+        <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+    </div>
+
+    <div class="related">
+        <h4><?= __('Tasks Created by this User') ?></h4>
+        <?php if (!empty($user->created_tasks)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('Id') ?></th>
+                <th scope="col"><?= __('Title') ?></th>
+                <th scope="col"><?= __('Description') ?></th>
+                <th scope="col"><?= __('Status') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($user->created_tasks as $created_task): ?>
+            <tr>
+                <td><?= h($created_task->id) ?></td>
+                <td><?= h($created_task->title) ?></td>
+                <td><?= h($created_task->description) ?></td>
+                <td><?= h($created_task->status) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $created_task->id]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
+
+    <div class="related">
+        <h4><?= __('Tasks Completed by this User') ?></h4>
+        <?php if (!empty($user->done_tasks)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('Id') ?></th>
+                <th scope="col"><?= __('Title') ?></th>
+                <th scope="col"><?= __('Description') ?></th>
+                <th scope="col"><?= __('Status') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($user->done_tasks as $done_task): ?>
+            <tr>
+                <td><?= h($done_task->id) ?></td>
+                <td><?= h($done_task->title) ?></td>
+                <td><?= h($done_task->description) ?></td>
+                <td><?= h($done_task->status) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $done_task->id]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
 </div>

@@ -65,6 +65,9 @@ class UsersController extends AppController
             'contain' => []
         ]);
 
+        $user['done_tasks'] = $this->getRelatedTasks($id, 'done_by');
+        $user['created_tasks'] = $this->getRelatedTasks($id, 'created_by');
+
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
@@ -133,5 +136,13 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function getRelatedTasks($user_id, $role) {
+        $this->loadModel('Tasks');
+
+        $tasks = $this->Tasks->find()->where([$role => $user_id]);
+        
+        return $tasks;
     }
 }
