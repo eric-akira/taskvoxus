@@ -64,6 +64,10 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event) {
         $this->Auth->allow(['login']);
+        $currentUsername = $this->Auth->user('username');
+        $currentId = $this->Auth->user('id');
+        $this->set(['currentUsername' => $currentUsername]);
+        $this->set(['currentId' => $currentId]);
     }
 
     /**
@@ -78,7 +82,7 @@ class AppController extends Controller
         // and should not be used in production. You should instead set "_serialize"
         // in each action as required.
 
-        $this->set(['userData'=> $this->Auth->user()]);
+        //$this->set(['userData'=> $this->Auth->user()]);
         //debug($this->Auth->user());
 
         if (!array_key_exists('_serialize', $this->viewVars) &&
