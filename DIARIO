@@ -7,7 +7,7 @@ Considerações:
 Foi muito legal fazer este teste. É a primeira fez que faço um teste de programação deste tipo.
 Escolhi o framework CakePHP pois acreditei que ele pudesse facilitar o desenvolvimento ao entregar funções básicas de um sistema web já prontas e porque a linguagem que mais utilizo atualmente para back-end é o PHP, apesar de nunca tê-lo utilizado.
 O código que entrego tem bastante coisa feita automaticamente pelo "cake bake" (similar ao "rails generate" do Ruby on Rails) e uns copypasta aqui e ali de diversos tutoriais e "stackoverflows" que li. Foquei em entregar as funcionalidades pedidas e não em criar algo do zero completamente meu, até porque acho isso desnecessário, obviamente dependendo do contexto.
-Meu maior desafio foi aprender como funciona o CakePHP, suas regras e abstrações (que são muitas!) e o Elastic Search, este que não consegui implementar no sistema.
+Meu maior desafio foi aprender como funciona o CakePHP, suas regras e abstrações (que são muitas!) e o Elastic Search, este que não consegui implementar no sistema. Além da falta do Elastic Search vocês devem notar que as tarefas são processadas na hora, apenas os anexos que são processados através de um background worker, diferente do que foi pedido no teste.
 Devem haver vários bugs, nem realizei testes corretamente, além de falhas de segurança como XSS, CSRF, SQL Injection, etc. E também tem bastante coisa hard-coded que não deveria estar do jeito que está.
 Com (muito) mais tempo eu refaria o front-end, implementaria algumas requisições async para melhorar a UX, implementaria as ferramentas de segurança do CakePHP, colocaria data para entrega da tarefa nas tarefas, um sistema de avisos (tanto por e-mail quanto por push) e, claro, o Elastic Search.
 
