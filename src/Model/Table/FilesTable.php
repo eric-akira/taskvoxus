@@ -5,6 +5,10 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Josegonzalez\CakeQueuesadilla\Queue\Queue;
+use Aws\S3\S3Client;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * Files Model
@@ -62,6 +66,9 @@ class FilesTable extends Table
             ->requirePresence('file_name', 'create')
             ->notEmpty('file_name');
 
+        $validator
+            ->allowEmpty('ext_location', 'create');
+
         /*$validator
             ->scalar('location')
             ->requirePresence('location', 'create')
@@ -73,5 +80,52 @@ class FilesTable extends Table
             ->notEmpty('file_of');*/
 
         return $validator;
+    }
+
+    public function uploadAWS($job) {
+
+        $filelocationp1 = 'C:\xampp\htdocs\taskvoxus\webroot';
+        $filelocationp2 = substr($job->data('location'), 2);
+        $filelocationp2 = str_replace('/', "\\", $filelocationp2);
+        $filelocationp1 .= $filelocationp2;
+
+        $filekey = substr($job->data('location'), -4);
+        $filekey = $job->data('id') . $filekey;
+
+        $clientS3 = S3Client::factory(array(
+            'credentials' => array(
+                'key'    => 'AKIAI3JOBW534QFI4SCA',
+                'secret' => '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'
+            ),
+            'region' => 'us-west-2'
+        ));
+        
+        $response = $clientS3->putObject(array(
+            'Bucket' => "taskvoxus",
+            'Key'    => $filekey,
+            'SourceFile' => $filelocationp1,
+            'ACL' => 'public-read'
+        ));
+
+        $data = ['status' => 'processed', 'ext_location' => $response['ObjectURL']];
+
+        $files = TableRegistry::get('Files');
+        $file = $files->get($job->data('id'));
+        $file = $files->patchEntity($file, $data);
+        
+        if ($files->save($file)) {
+            unlink($filelocationp1);
+        }
+    }
+
+    public function afterSave($event, $entity, $options) {
+        if($entity->isNew()) {
+            Queue::push(['\App\Model\Table\FilesTable','uploadAWS'], [
+                'id' => $entity['id'],
+                'file_name' => $entity['file_name'],
+                'location' => $entity['location'],
+                'file_of' => $entity['file_of'],
+            ]);
+        }
     }
 }

@@ -36,7 +36,7 @@ class CreateTasks extends AbstractMigration
         ]);
 
         $table->addColumn('status', 'string', [
-            'default' => 'processada',
+            'default' => 'pending',
             'limit' => 255,
             'null' => false
         ]);

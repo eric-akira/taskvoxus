@@ -27,6 +27,8 @@ class File extends Entity
         'location_field' => true,
         'location_file' => true,
         'file_of' => true,
-        'file_name' => true
+        'file_name' => true,
+        'status' => true,
+        'ext_location' => true,
     ];
 }
