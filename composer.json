@@ -14,7 +14,8 @@
         "admad/cakephp-social-auth": "^0.3.2",
         "xety/cake3-upload": "1.*",
         "josegonzalez/cakephp-queuesadilla": "0.4.2",
-        "aws/aws-sdk-php": "2.*"
+        "aws/aws-sdk-php": "2.*",
+        "cakephp/elastic-search": "@stable"
     },
     "require-dev": {
         "psy/psysh": "@stable",

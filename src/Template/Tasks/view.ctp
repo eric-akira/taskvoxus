@@ -72,7 +72,11 @@
         <h4><?= __('Related Files') ?></h4>
         <?php if ($files !== null): ?>
             <?php foreach ($files as $file): ?>
-                Check File: <?= $this->Html->link($file->file_name, $file->location); ?><br>
+                <?php if ($file->status !== 'processed'): ?>
+                    File "<?= $file->file_name ?>" is processing...<br>
+                <?php else: ?>
+                    Check File: <?= $this->Html->link($file->file_name, $file->ext_location); ?><br>
+                <?php endif; ?>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>

@@ -211,6 +211,7 @@ Plugin::load('Migrations');
 Plugin::load('ADmad/SocialAuth', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Xety/Cake3Upload');
 Plugin::load('Josegonzalez/CakeQueuesadilla');
+Plugin::load('Cake/ElasticSearch', ['bootstrap' => true]);
 
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 Queue::config(Configure::consume('Queuesadilla'));
@@ -221,63 +222,4 @@ Queue::config(Configure::consume('Queuesadilla'));
  */
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
-}
-
-use Aws\S3\S3Client;
-
-function buploadAWS($job) {
-
-    $filelocationp1 = 'C:\xampp\htdocs\taskvoxus\webroot';
-    $filelocationp2 = substr($job->data('location'), 2);
-    $filelocationp2 = str_replace('/', "\\", $filelocationp2);
-    $filelocationp1 .= $filelocationp2;
-
-    $filekey = substr($job->data('location'), -4);
-    $filekey = $job->data('id') . $filekey;
-
-    var_dump($filelocationp1);
-
-    $clientS3 = S3Client::factory(array(
-        'credentials' => array(
-            'key'    => 'AKIAI3JOBW534QFI4SCA',
-            'secret' => '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'
-        ),
-        'region' => 'us-west-2'
-    ));
-    
-    $response = $clientS3->putObject(array(
-        'Bucket' => "taskvoxus",
-        'Key'    => $filekey,
-        'SourceFile' => $filelocationp1,
-        'ACL' => 'public-read'
-    ));
-
-
-    $data = ['status' => 'processed', 'ext_location' => $response['ObjectURL']];
-
-    App::uses('Model', 'Files');
-    App::uses('Model', 'File');
-    $fileM = new File();
-    $fileM->load();
-
-    $file = $fileM->find()->where(['id' => $job->data('id')])->first();
-    $file = $fileM->patchEntity($job->data('entity'), $data);
-    $fileM->save($file);
-
-    /*$this->loadModel('Files');
-    $file = $this->Files->find()->where(['id' => $job->data('id')])->first();
-
-    $file = $this->Files->patchEntity($job->data('entity'), $data);
-
-    $this->Files->save($file);*/
-
-    /*if ($this->Files->save($file)) {
-        delete($filelocationp1);
-    }*/
-
-    //var_dump($job->data('location'));
-    //var_dump($response);
-    //var_dump($response['ObjectURL']);
-    //$result['ObjectURL'];
-    //delete($filelocationp1);
 }

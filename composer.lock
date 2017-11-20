@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95276906d329de8c95bd1e46305465e4",
+    "content-hash": "bbcfe77b7f4edf68d2f91420850905a7",
     "packages": [
         {
             "name": "admad/cakephp-social-auth",
@@ -293,6 +293,53 @@
                 "time"
             ],
             "time": "2017-04-27T01:27:49+00:00"
+        },
+        {
+            "name": "cakephp/elastic-search",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/elastic-search.git",
+                "reference": "69bd69597db076273eca76e7c4a4a8ba74ca2c66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/elastic-search/zipball/69bd69597db076273eca76e7c4a4a8ba74ca2c66",
+                "reference": "69bd69597db076273eca76e7c4a4a8ba74ca2c66",
+                "shasum": ""
+            },
+            "require": {
+                "ruflin/elastica": "~3.1"
+            },
+            "require-dev": {
+                "cakephp/cakephp": "~3.4.0",
+                "cakephp/cakephp-codesniffer": "~2.1",
+                "phpunit/phpunit": "^5.7|^6.0",
+                "psr/log": "~1.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Cake\\ElasticSearch\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/elastic-search/graphs/contributors"
+                }
+            ],
+            "description": "An Elastic Search datasource and data mapper for CakePHP 3.0",
+            "homepage": "https://github.com/cakephp/elastic-search",
+            "keywords": [
+                "cakephp",
+                "elasticsearch"
+            ],
+            "time": "2017-09-03T08:14:17+00:00"
         },
         {
             "name": "cakephp/migrations",
@@ -1019,6 +1066,63 @@
                 "phinx"
             ],
             "time": "2017-06-05T13:30:19+00:00"
+        },
+        {
+            "name": "ruflin/elastica",
+            "version": "3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruflin/Elastica.git",
+                "reference": "02bf2fbb8ad6b679869af145eed89436a1c50229"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/02bf2fbb8ad6b679869af145eed89436a1c50229",
+                "reference": "02bf2fbb8ad6b679869af145eed89436a1c50229",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "~3.0",
+                "guzzlehttp/guzzle": "~6.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
+                "egeloen/http-adapter": "Allow using httpadapter transport",
+                "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport (Requires php 5.5)",
+                "monolog/monolog": "Logging request"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elastica\\": "lib/Elastica/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Ruflin",
+                    "homepage": "http://ruflin.com/"
+                }
+            ],
+            "description": "Elasticsearch Client",
+            "homepage": "http://elastica.io/",
+            "keywords": [
+                "client",
+                "search"
+            ],
+            "time": "2016-09-23T10:24:25+00:00"
         },
         {
             "name": "socialconnect/auth",
@@ -2782,6 +2886,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "cakephp/elastic-search": 0,
         "psy/psysh": 0
     },
     "prefer-stable": true,

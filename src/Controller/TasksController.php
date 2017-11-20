@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use App\Controller\Configure;
 /**
  * Tasks Controller
  *
@@ -61,6 +61,9 @@ class TasksController extends AppController
         }
 
         $files = $this->getRelatedFiles($id);
+
+        //$taskarray = (array) $task;
+        //debug($taskarray);
 
         $this->set('files', $files);
         $this->set('task', $task);
@@ -181,6 +184,4 @@ class TasksController extends AppController
 
         return $files;
     }
-
-
 }
