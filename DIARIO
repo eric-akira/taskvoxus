@@ -89,7 +89,7 @@ Deploy Local em Windows
 
 - Instalar Git
 
-- Adicionar os seguintes diretórios em PATH do ambiente:
+- Adicionar os seguintes diretórios no PATH das variáveis do ambiente:
 	C:\xampp\mysql\bin;
 	C:\xampp\php;
 
@@ -112,7 +112,7 @@ Deploy Local em Windows
 - Em C:\xampp\htdocs clonar o repositório em "taskvoxus":
 	git clone https://github.com/smacabra/taskvoxus.git
 
-- Adicionar o seguinte diretório em PATH do ambiente:
+- Adicionar o seguinte diretório no PATH das variáveis do ambiente:
 	C:\xampp\htdocs\taskvoxus\bin
 
 - Pelo prompt de comando, em C:\xampp\htdocs\taskvoxus\ , rodar:
@@ -122,6 +122,12 @@ Deploy Local em Windows
 - Em C:\xampp\htdocs\taskvoxus\config\ :
 	* deletar "app.php"
 	* renomear "app.taskvoxus.php" para "app.php"
+
+- Em C:\xampp\htdocs\taskvoxus\src\Model\Table\ arquivo "FilesTable.php", linha 97 e 98:
+	* trocar "key_here" e "secret_here" pelas chaves que estão no email
+
+- Em C:\xampp\htdocs\taskvoxus\src\ arquivo "Application.php", linha 77 e 78:
+	* trocar "app_id_here" e "secret_here" pelas chaves que estão no email
 
 - Pelo prompt de comando, em C:\xampp\htdocs\taskvoxus\ , rodar:
 	cake migrations migrate
@@ -159,6 +165,4 @@ Deploy Local em Windows
 - Clique em "logout" para deslogar
 
 - Para acessar o AWS S3, que guarda os arquivos:
-	https://505755844082.signin.aws.amazon.com/console
-	user: taskvoxus
-	pass: senhaSuperSecreta1o1
+	* Detalhes no e-mail

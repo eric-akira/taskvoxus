@@ -94,8 +94,8 @@ class FilesTable extends Table
 
         $clientS3 = S3Client::factory(array(
             'credentials' => array(
-                'key'    => 'AKIAI3JOBW534QFI4SCA',
-                'secret' => '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'
+                'key'    => 'key_here',
+                'secret' => 'secret_here'
             ),
             'region' => 'us-west-2'
         ));

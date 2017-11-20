@@ -74,8 +74,8 @@ class Application extends BaseApplication
             'serviceConfig' => [
                 'provider' => [
                     'google' => [
-                        'applicationId' => '325816854073-js320365q2trtlmvjlklgcd12mmi2b29.apps.googleusercontent.com',
-                        'applicationSecret' => '_CGBq_LUg3f7SJ9XOp7Pp6Wx',
+                        'applicationId' => 'app_id_here',
+                        'applicationSecret' => 'secret_here',
                         'scope' => [
                             'https://www.googleapis.com/auth/userinfo.email',
                             'https://www.googleapis.com/auth/userinfo.profile',
