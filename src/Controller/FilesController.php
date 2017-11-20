@@ -74,6 +74,7 @@ class FilesController extends AppController
 
             $file = $this->Files->patchEntity($file, $this->request->getParsedBody());
             $file->file_of = $task_id;
+            $file->ext_location = 'blabla';
 
             if ($this->Files->save($file)) {
                 $this->Flash->success(__('The file has been saved.'));

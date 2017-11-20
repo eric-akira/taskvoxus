@@ -210,6 +210,11 @@ Type::build('timestamp')
 Plugin::load('Migrations');
 Plugin::load('ADmad/SocialAuth', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('Xety/Cake3Upload');
+Plugin::load('Josegonzalez/CakeQueuesadilla');
+Plugin::load('Cake/ElasticSearch', ['bootstrap' => true]);
+
+use Josegonzalez\CakeQueuesadilla\Queue\Queue;
+Queue::config(Configure::consume('Queuesadilla'));
 
 /*
  * Only try to load DebugKit in development mode

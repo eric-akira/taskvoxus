@@ -27,6 +27,15 @@ class Createfiles extends AbstractMigration
             'limit' => 255,
             'null' => false
         ]);
+        $table->addColumn('status', 'string', [
+            'default' => 'processing',
+            'limit' => 255,
+            'null' => false
+        ]);
+        $table->addColumn('ext_location', 'text', [
+            'default' => null,
+            'null' => true,
+        ]);
         $table->create();
     }
 }
