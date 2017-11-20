@@ -1,3 +1,3 @@
-Informações importantes em DIARIO.md
+Informações importantes em DIARIO
 
 Eric Akira
